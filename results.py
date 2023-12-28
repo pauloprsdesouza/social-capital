@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 # Load the dataset
-data = pd.read_csv('output.csv') 
+data = pd.read_csv('updated_recommendations.csv') 
 
 # Display the first few rows of the dataset to understand its structure
 data.head()
@@ -15,30 +15,6 @@ def compute_mrr(ranked_list):
         if rating > 3:  # Assuming a rating greater than 3 is considered as relevant
             return 1.0 / (idx + 1)
     return 0
-
-data = pd.DataFrame([
-    {"user_id": 1, "algorithm": 'A', 'ranking': 1, 'rating': 5},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 2, 'rating': 1},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 3, 'rating': 5},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 4, 'rating': 1},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 5, 'rating': 1},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 6, 'rating': 4},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 7, 'rating': 0},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 8, 'rating': 0},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 9, 'rating': 5},
-    {"user_id": 1, "algorithm": 'A', 'ranking': 10, 'rating': 5},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 1, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 2, 'rating': 5},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 3, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 4, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 5, 'rating': 5},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 6, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 7, 'rating': 5},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 8, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 9, 'rating': 1},
-    {"user_id": 2, "algorithm": 'A', 'ranking': 10, 'rating': 1}
-])
-
 
 # Group by user and algorithm, then apply the MRR function to the ratings
 mrr_values = data.groupby(['user_id', 'algorithm'])['rating'].apply(list).reset_index()
@@ -87,9 +63,6 @@ def compute_average_precision(dataframe, k=10, relevant_threshold=4):
 map_per_algorithm = compute_average_precision(data)
 print(map_per_algorithm)
 
-
-
-
 def compute_ndcg(ranked_list):
     """
     Compute the NDCG@10 given a ranked list of ratings.
@@ -109,19 +82,19 @@ ndcg_per_algorithm = mrr_values.groupby('algorithm')['ndcg'].mean()
 print(ndcg_per_algorithm)
 
 
-def compute_precision_at_k(ranked_list, k=10):
+def compute_precision_at_k(ranked_list, k=5):
     """
     Compute the precision at k given a ranked list of ratings.
     """
     return sum([1 for rating in ranked_list[:k] if rating > 3]) / k
 
 # Compute Precision@10 for each user and algorithm
-mrr_values['precision_at_10'] = mrr_values['rating'].apply(compute_precision_at_k)
+mrr_values['precision_at_5'] = mrr_values['rating'].apply(compute_precision_at_k)
 
 # Compute the mean Precision@10 for each algorithm
-precision_at_10_per_algorithm = mrr_values.groupby('algorithm')['precision_at_10'].mean()
+precision_at_5_per_algorithm = mrr_values.groupby('algorithm')['precision_at_5'].mean()
 
-print(precision_at_10_per_algorithm)
+print(precision_at_5_per_algorithm)
 print()
 
 import scipy.stats as stats
@@ -129,7 +102,7 @@ import scipy.stats as stats
 # ANOVA test results
 anova_results = {}
 
-metrics = ['mrr', 'avg_precision', 'ndcg', 'precision_at_10']
+metrics = ['mrr', 'avg_precision', 'ndcg', 'precision_at_5']
 
 for metric in metrics:
     f_val, p_val = stats.f_oneway(
@@ -140,7 +113,15 @@ for metric in metrics:
         mrr_values[mrr_values['algorithm'] == 'SC'][metric],
         mrr_values[mrr_values['algorithm'] == 'SC-SCSA_PLUS'][metric],
         mrr_values[mrr_values['algorithm'] == 'SCSA'][metric],
-        mrr_values[mrr_values['algorithm'] == 'SCSA-SCSA_PLUS'][metric]
+        mrr_values[mrr_values['algorithm'] == 'SCSA-SCSA_PLUS'][metric],
+        mrr_values[mrr_values['algorithm'] == 'B1-SCSA_PLUS'][metric],
+        mrr_values[mrr_values['algorithm'] == 'B1-STATE_ART'][metric],
+        mrr_values[mrr_values['algorithm'] == 'CS-SCSA_PLUS'][metric],
+        mrr_values[mrr_values['algorithm'] == 'CS-STATE_ART'][metric],
+        mrr_values[mrr_values['algorithm'] == 'SC-SCSA_PLUS'][metric],
+        mrr_values[mrr_values['algorithm'] == 'SC-STATE_ART'][metric],
+        mrr_values[mrr_values['algorithm'] == 'SCSA-SCSA_PLUS'][metric],
+        mrr_values[mrr_values['algorithm'] == 'SCSA-STATE_ART'][metric]
     )
     anova_results[metric] = {'F-value': f_val, 'p-value': p_val}
 
