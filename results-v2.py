@@ -5,7 +5,7 @@ import itertools
 
 
 # Load the dataset
-data = pd.read_csv('updated_recommendations.csv')
+data = pd.read_csv('social-capital/updated_recommendations.csv')
 
 # Functions to compute various metrics
 def compute_mrr(ranked_list):

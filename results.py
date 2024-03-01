@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 # Load the dataset
-data = pd.read_csv('updated_recommendations.csv') 
+data = pd.read_csv('social-capital/updated_recommendations.csv') 
 
 # Display the first few rows of the dataset to understand its structure
 data.head()

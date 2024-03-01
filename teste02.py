@@ -16,7 +16,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 # Load data
-data = pd.read_csv('output_recommendations.csv')
+data = pd.read_csv('social-capital\output_recommendations.csv')
 
 # Preprocessing
 def clean_text(text):

@@ -47,8 +47,8 @@ def save_to_csv(data, output_file_path):
 
 def main():
     # Define file paths
-    input_file_path = 'output_recommendations.csv'
-    output_file_path = 'updated_recommendations.csv'
+    input_file_path = 'social-capital\output_recommendations.csv'
+    output_file_path = 'teste_recommendations.csv'
     
     # Run the processes
     data = load_data(input_file_path)
