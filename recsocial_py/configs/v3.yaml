@@ -1,0 +1,80 @@
+random_seed: 42
+
+paths:
+  v2_config_path: configs/v2.yaml
+  v1_config_path: configs/v1.yaml
+  processed_v3_dir: data/v3/processed
+  interim_v3_dir: data/v3/interim
+  reports_v3_dir: reports/v3
+  legacy_output_v3: data/raw/legacy/v3_output.csv
+
+reputation:
+  listed_count_theta: 0.01
+
+influence:
+  include_impressions: true
+  zero_followers_strategy: safe_one
+
+recency:
+  decay_factor: 0.1
+  formula: logarithmic
+
+context:
+  max_features: 1000
+  use_topic_keywords: true
+
+social_capital:
+  include_author_strength: true
+  include_mentions_strength: true
+  include_recency_multiplier: true
+
+pca:
+  enabled: true
+  variance_ratio: 0.95
+  max_features: 1000
+  score_component: 0
+
+evaluation:
+  relevance_threshold: 4
+  precision_k_values: [1, 2, 3, 4, 5, 10]
+  ndcg_k: 10
+  graded_ndcg: true
+  metric_protocol: paper_notebook
+
+statistics:
+  paired_t_test: true
+  significance_level: 0.05
+  comparisons:
+    - [B1, SCSA_PLUS]
+    - [SCSA, SCSA_PLUS]
+    - [B1-STATE_ART, B1-SCSA_PLUS]
+    - [CS-STATE_ART, CS-SCSA_PLUS]
+    - [SC-STATE_ART, SC-SCSA_PLUS]
+    - [SCSA-STATE_ART, SCSA-SCSA_PLUS]
+
+base_algorithms:
+  - B1
+  - CS
+  - SC
+  - SCSA
+
+rerank_suffixes:
+  state_art: STATE_ART
+  scsa_plus: SCSA_PLUS
+  scsa_plus_v3: SCSA_PLUS_V3
+
+paper_targets:
+  mrr:
+    SC: 0.793
+    B1: 0.748
+    SCSA: 0.748
+  map:
+    SC: 0.777
+    B1: 0.728
+  ndcg:
+    SC: 0.788
+    B1: 0.753
+  tolerance: 0.02
+  # Paper §26 labels the SC baseline column as "SCSA-PLUS" in headline results.
+  aliases:
+    SCSA_PLUS: SC

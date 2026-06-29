@@ -1,0 +1,4 @@
+news_id,author_id,text,likes_count,retweets_count,comments_count,mentioned_user_ids,topic,subtopic,created_at,oracle_social_capital_score,oracle_sentiment_score
+n1,u1,great news about technology launch,100,50,20,u2,tech,ai,2021-01-01,1000,0.5
+n2,u2,neutral update on sports,10,2,1,,sports,soccer,2021-01-02,100,-0.1
+n3,u3,amazing breakthrough in science,200,80,40,u1|u2,science,space,2021-01-03,2000,0.8

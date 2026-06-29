@@ -1,0 +1,183 @@
+# AMCIS paper reference values (SDD §18–19)
+# Unlocking the Power of Social Capital — Figures 3–10
+
+reference_results:
+  ranking_metrics:
+    figure_3_b1:
+      B1_SCSA_PLUS:
+        MRR: 0.793
+        MAP_10: 0.777
+        NDCG_10: 0.788
+      B1_STATE_ART:
+        MRR: 0.710
+        MAP_10: 0.434
+        NDCG_10: 0.813
+      SCSA_PLUS_V3:
+        MRR: 0.665
+        MAP_10: 0.454
+        NDCG_10: 0.659
+    figure_4_cs:
+      CS_SCSA_PLUS:
+        MRR: 0.641
+        MAP_10: 0.669
+        NDCG_10: 0.702
+      CS_STATE_ART:
+        MRR: 0.680
+        MAP_10: 0.415
+        NDCG_10: 0.817
+      SCSA_PLUS_V3:
+        MRR: 0.630
+        MAP_10: 0.440
+        NDCG_10: 0.660
+    figure_5_sc:
+      SC_SCSA_PLUS:
+        MRR: 0.778
+        MAP_10: 0.786
+        NDCG_10: 0.792
+      SC_STATE_ART:
+        MRR: 0.739
+        MAP_10: 0.508
+        NDCG_10: 0.836
+      SCSA_PLUS_V3:
+        MRR: 0.695
+        MAP_10: 0.505
+        NDCG_10: 0.676
+    figure_6_scsa:
+      SCSA_SCSA_PLUS:
+        MRR: 0.756
+        MAP_10: 0.735
+        NDCG_10: 0.753
+      SCSA_STATE_ART:
+        MRR: 0.704
+        MAP_10: 0.411
+        NDCG_10: 0.811
+      SCSA_PLUS_V3:
+        MRR: 0.665
+        MAP_10: 0.427
+        NDCG_10: 0.656
+
+  precision_metrics:
+    figure_7_b1:
+      B1_SCSA_PLUS:
+        P_1: 0.592
+        P_2: 0.634
+        P_3: 0.624
+        P_4: 0.623
+        P_5: 0.606
+      B1_STATE_ART:
+        P_1: 0.570
+        P_2: 0.549
+        P_3: 0.560
+        P_4: 0.570
+        P_5: 0.560
+      SCSA_PLUS_V3:
+        P_1: 0.577
+        P_2: 0.577
+        P_3: 0.558
+        P_4: 0.549
+        P_5: 0.557
+    figure_8_cs:
+      CS_SCSA_PLUS:
+        P_1: 0.408
+        P_2: 0.437
+        P_3: 0.474
+        P_4: 0.496
+        P_5: 0.518
+      CS_STATE_ART:
+        P_1: 0.530
+        P_2: 0.520
+        P_3: 0.563
+        P_4: 0.556
+        P_5: 0.567
+      SCSA_PLUS_V3:
+        P_1: 0.535
+        P_2: 0.535
+        P_3: 0.053
+        P_4: 0.528
+        P_5: 0.549
+    figure_9_sc:
+      SC_SCSA_PLUS:
+        P_1: 0.630
+        P_2: 0.630
+        P_3: 0.607
+        P_4: 0.620
+        P_5: 0.638
+      SC_STATE_ART:
+        P_1: 0.616
+        P_2: 0.610
+        P_3: 0.602
+        P_4: 0.599
+        P_5: 0.594
+      SCSA_PLUS_V3:
+        P_1: 0.616
+        P_2: 0.609
+        P_3: 0.611
+        P_4: 0.609
+        P_5: 0.605
+    figure_10_scsa:
+      SCSA_SCSA_PLUS:
+        P_1: 0.606
+        P_2: 0.585
+        P_3: 0.568
+        P_4: 0.546
+        P_5: 0.555
+      SCSA_STATE_ART:
+        P_1: 0.600
+        P_2: 0.605
+        P_3: 0.549
+        P_4: 0.510
+        P_5: 0.510
+      SCSA_PLUS_V3:
+        P_1: 0.605
+        P_2: 0.521
+        P_3: 0.507
+        P_4: 0.521
+        P_5: 0.512
+
+  winners:
+    figure_3_b1:
+      MRR: B1-SCSA_PLUS
+      MAP_10: B1-SCSA_PLUS
+      NDCG_10: B1-STATE_ART
+    figure_4_cs:
+      MRR: CS-STATE_ART
+      MAP_10: CS-SCSA_PLUS
+      NDCG_10: CS-STATE_ART
+    figure_5_sc:
+      MRR: SC-SCSA_PLUS
+      MAP_10: SC-SCSA_PLUS
+      NDCG_10: SC-STATE_ART
+    figure_6_scsa:
+      MRR: SCSA-SCSA_PLUS
+      MAP_10: SCSA-SCSA_PLUS
+      NDCG_10: SCSA-STATE_ART
+    figure_7_b1:
+      P_1: B1-SCSA_PLUS
+      P_2: B1-SCSA_PLUS
+      P_3: B1-SCSA_PLUS
+      P_4: B1-SCSA_PLUS
+      P_5: B1-SCSA_PLUS
+    figure_8_cs:
+      P_1: SCSA_PLUS_V3
+      P_2: SCSA_PLUS_V3
+      P_3: CS-STATE_ART
+      P_4: CS-STATE_ART
+      P_5: CS-STATE_ART
+    figure_9_sc:
+      P_1: SC-SCSA_PLUS
+      P_2: SC-SCSA_PLUS
+      P_3: SCSA_PLUS_V3
+      P_4: SC-SCSA_PLUS
+      P_5: SC-SCSA_PLUS
+    figure_10_scsa:
+      P_1: SCSA-SCSA_PLUS
+      P_2: SCSA-STATE_ART
+      P_3: SCSA-SCSA_PLUS
+      P_4: SCSA-SCSA_PLUS
+      P_5: SCSA-SCSA_PLUS
+
+validation:
+  chart_label_tolerance: 0.001
+  algorithmic_reproduction_tolerance: 0.03
+  relaxed_reproduction_tolerance: 0.05
+  preserve_chart_anomalies: true

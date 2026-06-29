@@ -1,0 +1,84 @@
+random_seed: 42
+
+influence:
+  mode: paper_pseudocode
+  lambda_: 1.0
+  beta_lists_fallback: 1.0
+  verified_bonus_theta: 1.0
+  zero_followers_strategy: max_followers
+
+sentiment:
+  enabled: true
+  backend: vader
+  weights:
+    positive: 1.5
+    negative: 1.0
+    neutral: 0.5
+    mixed: 0.5
+    unknown: 1.0
+
+text:
+  language: en
+  lowercase: true
+  remove_urls: true
+  remove_mentions: false
+  remove_hashtags_symbol: true
+  remove_stopwords: true
+  min_df: 2
+  max_df: 0.95
+  ngram_range: [1, 2]
+
+pca:
+  enabled: true
+  n_components: 100
+  random_state: 42
+
+recommendation:
+  relevance_threshold: 4
+  similarity_threshold: 0.7
+  top_k: 10
+  rounds: 4
+
+evaluation:
+  metrics:
+    - mrr
+    - precision_at_k
+    - map
+    - ndcg
+  precision_k_values: [1, 2, 3, 4, 5, 10]
+  ndcg_k: 10
+  graded_ndcg: true
+  relevance_threshold: 4
+  map_protocol: fedcsis_pooled
+
+paths:
+  raw_ratings: data/raw/ratings.csv
+  raw_tweets: data/raw/tweets.csv
+  raw_users_twitter: data/raw/users_twitter.csv
+  processed_dir: data/v1/processed
+  interim_dir: data/v1/interim
+  reports_dir: reports/v1
+
+paper_targets:
+  mrr:
+    SC: 0.75
+    SC+SA: 0.68
+    CS-PLUS: 0.67
+    B1: 0.68
+  map:
+    SC: 0.62
+    SC+SA: 0.53
+    CS-PLUS: 0.52
+    B1: 0.55
+  ndcg:
+    SC: 0.85
+    SC+SA: 0.81
+    CS-PLUS: 0.79
+    B1: 0.79
+  tolerance: 0.05
+
+algorithm_aliases:
+  SC: SC
+  SCSA: SC+SA
+  CS: CS-PLUS
+  B1: B1

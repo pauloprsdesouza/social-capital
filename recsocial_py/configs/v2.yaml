@@ -1,0 +1,75 @@
+v1_config_path: configs/v1.yaml
+random_seed: 42
+
+recency:
+  enabled: true
+  lambda_decay: 0.03
+  unit: days
+
+social_capital:
+  normalize_components: true
+  scaling_mode: legacy_notebook
+  author_influence_mode: paper_compatible
+  use_extended_formula: false
+  weights:
+    sentiment_impact: 0.20
+    engagement_score: 0.20
+    content_relevance: 0.20
+    network_influence: 0.20
+    author_influence: 0.10
+    content_virality: 0.10
+    recency_score: 0.0
+    diversity_score: 0.0
+    context_score: 0.0
+
+state_art:
+  mode: content_plus_engagement
+  content_weight: 1.0
+  engagement_weight: 1.0
+
+evaluation:
+  relevance_threshold: 4
+  precision_k_values: [1, 2, 3, 4, 5, 10]
+  ndcg_k: 10
+  graded_ndcg: false
+  metric_protocol: session_list
+  map_protocol: sdd
+  metrics:
+    - mrr
+    - map_at_k
+    - precision_at_k
+    - ndcg_at_k
+
+paths:
+  raw_ratings: data/raw/ratings.csv
+  raw_tweets: data/raw/tweets.csv
+  raw_users_twitter: data/raw/users_twitter.csv
+  processed_dir: data/v1/processed
+  interim_dir: data/v1/interim
+  reports_dir: reports/v1
+  processed_v2_dir: data/v2/processed
+  interim_v2_dir: data/v2/interim
+  reports_v2_dir: reports/v2
+  legacy_recommendations: data/raw/legacy/v2_recommendations.csv
+
+base_algorithms:
+  - B1
+  - CS
+  - SC
+  - SCSA
+
+rerank_suffixes:
+  state_art: STATE_ART
+  scsa_plus: SCSA_PLUS
+  scsa_plus_v3: SCSA_PLUS_V3
+
+statistics:
+  paired_t_test: true
+  significance_level: 0.05
+  comparisons:
+    - [B1-STATE_ART, B1-SCSA_PLUS]
+    - [SCSA-STATE_ART, SCSA-SCSA_PLUS]
+    - [SC-STATE_ART, SC-SCSA_PLUS]
+    - [CS-STATE_ART, CS-SCSA_PLUS]
+    - [B1-STATE_ART, B1-SCSA_PLUS_V3]
+    - [SCSA-STATE_ART, SCSA-SCSA_PLUS_V3]

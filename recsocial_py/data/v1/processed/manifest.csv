@@ -1,0 +1,6 @@
+dataset,path,rows
+users,C:\Users\paulo\source\repos\social-capital\recsocial_py\data\v1\processed\users.csv,225
+news,C:\Users\paulo\source\repos\social-capital\recsocial_py\data\v1\processed\news.csv,1373
+comments,C:\Users\paulo\source\repos\social-capital\recsocial_py\data\v1\processed\comments.csv,0
+mentions,C:\Users\paulo\source\repos\social-capital\recsocial_py\data\v1\processed\mentions.csv,1429
+ratings,C:\Users\paulo\source\repos\social-capital\recsocial_py\data\v1\processed\ratings.csv,3100

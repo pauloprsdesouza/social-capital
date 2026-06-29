@@ -1,0 +1,4 @@
+user_id,followers_count,lists_count,received_likes_count,published_news_count,is_verified
+u1,1000,10,500,100,1
+u2,100,5,50,20,0
+u3,5000,50,2000,400,1
