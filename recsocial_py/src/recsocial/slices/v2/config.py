@@ -7,7 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from recsocial.shared.config_loader import load_yaml_config, resolve_paths_in_dict
-from recsocial.shared.config_models import EvaluationConfig, RerankConfig
+from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, RerankConfig
 from recsocial.slices.v1.config import AppConfig, PathsConfig, load_config
 
 
@@ -31,7 +31,7 @@ class RecencyConfig(BaseModel):
 
 class SocialCapitalV2Config(BaseModel):
     normalize_components: bool = True
-    scaling_mode: str = "legacy_notebook"
+    scaling_mode: str = "standard"
     author_influence_mode: str = "paper_compatible"
     weights: SocialCapitalWeights = Field(default_factory=SocialCapitalWeights)
     use_extended_formula: bool = False
@@ -47,13 +47,6 @@ class V2PathsConfig(PathsConfig):
     processed_v2_dir: str = "data/v2/processed"
     interim_v2_dir: str = "data/v2/interim"
     reports_v2_dir: str = "reports/v2"
-    legacy_recommendations: str = "data/raw/legacy/v2_recommendations.csv"
-
-
-class StatisticsConfigV2(BaseModel):
-    paired_t_test: bool = True
-    significance_level: float = 0.05
-    comparisons: list[list[str]] = Field(default_factory=list)
 
 
 class V2Config(RerankConfig):
@@ -63,7 +56,7 @@ class V2Config(RerankConfig):
     social_capital: SocialCapitalV2Config = Field(default_factory=SocialCapitalV2Config)
     state_art: StateArtConfig = Field(default_factory=StateArtConfig)
     evaluation: EvaluationConfig = Field(default_factory=EvaluationConfig)
-    statistics: StatisticsConfigV2 = Field(default_factory=StatisticsConfigV2)
+    statistics: PairedTestConfig = Field(default_factory=PairedTestConfig)
     paths: V2PathsConfig = Field(default_factory=V2PathsConfig)
     trial_algo_map: dict[str, str] = Field(
         default_factory=lambda: {"SC": "SC", "SCSA": "SCSA", "CS": "CS", "B1": "B1"}

@@ -7,7 +7,6 @@ from pathlib import Path
 import pandas as pd
 
 from recsocial.shared.experiment_runner import ExperimentArtifacts, run_standard_experiment
-from recsocial.shared.legacy_compare import compare_summary_to_legacy
 from recsocial.shared.session_metrics import (
     evaluate_recommendations_by_session,
     settings_from_evaluation_config,
@@ -39,10 +38,8 @@ def run_v3_experiment(cfg: V3Config, package_root: Path) -> dict[str, Path]:
         "ttests": reports_dir / "paired_ttests.csv",
         "correlations": reports_dir / "correlation_matrix.csv",
         "ranking_shifts": reports_dir / "ranking_shifts.csv",
-        "legacy_comparison": reports_dir / "legacy_v3_comparison.csv",
         "report": reports_dir / "report.md",
     }
-    legacy_path = Path(cfg.paths.legacy_output_v3)
 
     def _enrich(artifacts: ExperimentArtifacts) -> ExperimentArtifacts:
         extras = dict(artifacts.extras)
@@ -63,12 +60,6 @@ def run_v3_experiment(cfg: V3Config, package_root: Path) -> dict[str, Path]:
         if shift_frames:
             extras["ranking_shifts"] = pd.concat(shift_frames, ignore_index=True)
 
-        if legacy_path.exists():
-            extras["legacy_comparison"] = compare_summary_to_legacy(
-                artifacts.metrics_summary,
-                legacy_path,
-                version_prefix="v3",
-            )
         artifacts.extras = extras
         return artifacts
 
@@ -82,7 +73,6 @@ def run_v3_experiment(cfg: V3Config, package_root: Path) -> dict[str, Path]:
             cfg,
             art.metrics_summary,
             art.extras.get("ttests", pd.DataFrame()),
-            art.extras.get("legacy_comparison"),
             path,
         ),
     )

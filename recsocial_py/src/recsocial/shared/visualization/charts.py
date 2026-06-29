@@ -338,51 +338,6 @@ def plot_ttest_heatmap(
     return _save(fig, output_path)
 
 
-def plot_legacy_comparison(
-    comparison: pd.DataFrame,
-    output_path: Path,
-    *,
-    title: str,
-    version_prefix: str,
-    metric: str = "mrr",
-    limit: int = 12,
-) -> Path:
-    apply_style()
-    col_cur = f"{metric}_{version_prefix}"
-    col_leg = f"{metric}_legacy"
-    if col_cur not in comparison.columns:
-        raise ValueError(f"Missing column {col_cur}")
-
-    df = comparison.dropna(subset=[col_leg]).head(limit).copy()
-    if df.empty:
-        fig, ax = plt.subplots()
-        ax.text(0.5, 0.5, "No legacy comparison data", ha="center", va="center")
-        ax.axis("off")
-        return _save(fig, output_path)
-
-    x = np.arange(len(df))
-    width = 0.35
-    fig, ax = plt.subplots(figsize=(10, 6))
-    bars_cur = ax.bar(
-        x - width / 2,
-        df[col_cur],
-        width,
-        label=f"Reproduction ({version_prefix.upper()})",
-        color="#4C72B0",
-    )
-    bars_leg = ax.bar(x + width / 2, df[col_leg], width, label="Legacy CSV", color="#937860")
-    _annotate_vertical_bars(ax, bars_cur, decimals=3)
-    _annotate_vertical_bars(ax, bars_leg, decimals=3)
-    ax.set_xticks(x)
-    ax.set_xticklabels(df["algorithm"], rotation=45, ha="right")
-    ax.set_ylabel(metric.upper())
-    ax.set_title(title)
-    ax.legend()
-    if ax.get_ylim()[1] <= 1.05:
-        ax.set_ylim(0, 1.15)
-    return _save(fig, output_path)
-
-
 def plot_ranking_shifts(
     shifts: pd.DataFrame,
     output_path: Path,

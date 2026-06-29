@@ -20,7 +20,7 @@ For each base algorithm (B1, CS, SC, SCSA) and user session:
 2. **{BASE}-SCSA_PLUS** — re-rank the same 10 trial items by V1 SC+SA score.
 3. **{BASE}-SCSA_PLUS_V3** — re-rank by enhanced component Social Capital score.
 
-## 4. Scaling (legacy_notebook mode)
+## 4. Scaling (`standard` mode)
 
 Matches `MainV2.ipynb`:
 

@@ -3,3 +3,18 @@ __pycache__/
 .pytest_cache/
 .venv/
 *.pyc
+.DS_Store
+*.egg-info/
+
+# Pre-migration / notebook artifacts (not part of the package)
+legacy/
+src/
+database/
+
+# Generated experiment outputs (regenerate with: recsocial run all)
+recsocial_py/reports/
+recsocial_py/data/v1/interim/
+recsocial_py/data/v1/processed/*
+!recsocial_py/data/v1/processed/.gitkeep
+recsocial_py/data/v2/
+recsocial_py/data/v3/

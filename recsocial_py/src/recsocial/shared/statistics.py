@@ -2,22 +2,15 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-
 import pandas as pd
 import scipy.stats as stats
 
-
-@dataclass
-class StatisticsConfig:
-    paired_t_test: bool = True
-    significance_level: float = 0.05
-    comparisons: list[list[str]] = field(default_factory=list)
+from recsocial.shared.config_models import PairedTestConfig
 
 
 def run_paired_t_tests(
     metrics_detail: pd.DataFrame,
-    cfg: StatisticsConfig,
+    cfg: PairedTestConfig,
 ) -> pd.DataFrame:
     comparisons = cfg.comparisons or []
     metric_cols = ["mrr", "map", "ndcg"]

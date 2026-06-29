@@ -13,7 +13,6 @@ PALETTE = {
     "SCSA": "#8172B3",
     "SCSA_PLUS": "#DD8452",
     "STATE_ART": "#937860",
-    "SCSA_PLUS": "#DD8452",
     "default": "#4C72B0",
 }
 

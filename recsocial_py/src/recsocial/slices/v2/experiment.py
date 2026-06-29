@@ -7,7 +7,6 @@ from pathlib import Path
 import pandas as pd
 
 from recsocial.shared.experiment_runner import ExperimentArtifacts, run_standard_experiment
-from recsocial.shared.legacy_compare import compare_summary_to_legacy
 from recsocial.shared.reference_validation import run_v2_reference_validation
 from recsocial.shared.session_metrics import (
     evaluate_recommendations_by_session,
@@ -43,28 +42,20 @@ def run_v2_experiment(cfg: V2Config, package_root: Path) -> dict[str, Path]:
 
     eval_settings = settings_from_evaluation_config(cfg.evaluation)
     reports_dir = Path(cfg.paths.reports_v2_dir)
+    reference_path = package_root / "configs" / "reference_results.yaml"
     output_paths = {
         "recommendations": reports_dir / "v2_recommendations.csv",
         "metrics_detail": reports_dir / "v2_metrics_detail.csv",
         "metrics_summary": reports_dir / "v2_metrics_summary.csv",
-        "legacy_comparison": reports_dir / "legacy_metrics_comparison.csv",
         "ttests": reports_dir / "paired_ttests.csv",
         "report": reports_dir / "report.md",
         "validation_tables": reports_dir / "tables",
     }
-    legacy_path = Path(cfg.paths.legacy_recommendations)
-    reference_path = package_root / "configs" / "reference_results.yaml"
 
     def _enrich(artifacts: ExperimentArtifacts) -> ExperimentArtifacts:
         extras = dict(artifacts.extras)
         if cfg.statistics.paired_t_test:
             extras["ttests"] = run_paired_t_tests(artifacts.metrics_detail, cfg.statistics)
-        if legacy_path.exists():
-            extras["legacy_comparison"] = compare_summary_to_legacy(
-                artifacts.metrics_summary,
-                legacy_path,
-                version_prefix="v2",
-            )
         if reference_path.exists():
             extras["validation"] = run_v2_reference_validation(
                 artifacts.recommendations,
@@ -87,7 +78,6 @@ def run_v2_experiment(cfg: V2Config, package_root: Path) -> dict[str, Path]:
         write_report=lambda art, path: write_v2_report(
             cfg,
             art.metrics_summary,
-            art.extras.get("legacy_comparison"),
             path,
             validation_result=art.extras.get("validation"),
         ),

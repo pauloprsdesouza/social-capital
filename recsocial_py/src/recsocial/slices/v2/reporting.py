@@ -7,14 +7,13 @@ from pathlib import Path
 import pandas as pd
 
 from recsocial.shared.reference_validation import format_validation_report_markdown
-from recsocial.shared.reporting import format_legacy_bullets, format_metrics_table, write_markdown_report
+from recsocial.shared.reporting import format_metrics_table, write_markdown_report
 from recsocial.slices.v2.config import V2Config
 
 
 def write_v2_report(
     cfg: V2Config,
     summary: pd.DataFrame,
-    legacy_comparison: pd.DataFrame | None,
     output_path: Path,
     *,
     validation_result: dict | None = None,
@@ -22,7 +21,7 @@ def write_v2_report(
     sections = [
         "# V2 Reproduction Report",
         "",
-        "Enhanced Social Capital (SCSA_PLUS_V3) — CSV pipeline.",
+        "Enhanced Social Capital (AMCIS 2024) — CSV pipeline.",
         "",
         "## Component weights",
         "",
@@ -32,10 +31,6 @@ def write_v2_report(
         sections.append(f"{k}: {v}")
     sections.extend(["```", "", "## Metrics summary", ""])
     sections.extend(format_metrics_table(summary, sort_by=None))
-
-    if legacy_comparison is not None and not legacy_comparison.empty:
-        sections.extend(["", "## Comparison with legacy recommendations", ""])
-        sections.extend(format_legacy_bullets(legacy_comparison, version_prefix="v2"))
 
     if validation_result is not None:
         sections.extend(["", *format_validation_report_markdown(validation_result)])

@@ -1,1 +1,7 @@
-"""Vertical slices: v1 (baseline), v2 (enhanced SC), v3 (SCSA-PLUS + PCA)."""
+"""Vertical slices — one folder per paper version (V1, V2, V3).
+
+Each slice is self-contained domain logic; shared evaluation and pipeline
+code lives in ``recsocial.shared``.
+
+See ``docs/VERSION_COMPARISON.md`` for differences among versions.
+"""

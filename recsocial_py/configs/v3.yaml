@@ -6,7 +6,6 @@ paths:
   processed_v3_dir: data/v3/processed
   interim_v3_dir: data/v3/interim
   reports_v3_dir: reports/v3
-  legacy_output_v3: data/raw/legacy/v3_output.csv
 
 reputation:
   listed_count_theta: 0.01

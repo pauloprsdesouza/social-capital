@@ -14,7 +14,6 @@ def write_v3_report(
     cfg: V3Config,
     summary: pd.DataFrame,
     ttests: pd.DataFrame,
-    legacy: pd.DataFrame | None,
     output_path: Path,
 ) -> None:
     sections = [
@@ -22,7 +21,7 @@ def write_v3_report(
         "",
         "Paper: *Exploiting Social Capital for Improving Personalized Recommendations in Online Social Networks*",
         "",
-        "Pipeline: SCSA-PLUS social capital + PCA re-ranking (MainV3.ipynb). CSV-only.",
+        "Pipeline: SCSA-PLUS social capital + PCA re-ranking. CSV-only.",
         "",
         "## Metrics summary",
         "",
@@ -68,14 +67,6 @@ def write_v3_report(
                 sections.append(
                     f"- **{metric.upper()}** measured **{measured:.3f}** vs paper **{target:.3f}** (Δ {delta:+.3f})"
                 )
-
-    if legacy is not None and not legacy.empty:
-        sections.extend(["", "## Legacy output_v3.csv comparison", ""])
-        for row in legacy.head(12).itertuples(index=False):
-            sections.append(
-                f"- {row.algorithm}: MRR {row.mrr_v3:.3f} vs {row.mrr_legacy} | "
-                f"NDCG {row.ndcg_v3:.3f} vs {row.ndcg_legacy}"
-            )
 
     sections.extend(
         [

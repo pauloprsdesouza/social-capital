@@ -5,3 +5,11 @@ __pycache__/
 pytest-cache-files-*/
 .venv/
 *.pyc
+
+# Generated outputs — run `recsocial run all` to recreate
+reports/
+data/v1/interim/
+data/v1/processed/*
+!data/v1/processed/.gitkeep
+data/v2/
+data/v3/

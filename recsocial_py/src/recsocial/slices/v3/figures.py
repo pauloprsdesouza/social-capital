@@ -9,7 +9,6 @@ import pandas as pd
 from recsocial.shared.visualization.charts import (
     plot_correlation_heatmap,
     plot_grouped_metrics_bar,
-    plot_legacy_comparison,
     plot_precision_at_k,
     plot_ranking_shifts,
     plot_ttest_heatmap,
@@ -96,17 +95,6 @@ def generate_v3_figures(reports_dir: Path, cfg: V3Config) -> dict[str, Path]:
             x_col="pca1_score" if "pca1_score" in shifts.columns else "score_orig",
         )
 
-    legacy_path = reports_dir / "legacy_v3_comparison.csv"
-    if legacy_path.exists():
-        legacy = pd.read_csv(legacy_path)
-        paths["legacy_mrr"] = plot_legacy_comparison(
-            legacy,
-            figures_dir / "fig09_legacy_mrr.png",
-            title="V3 — Reproduction vs Legacy output_v3.csv (MRR)",
-            version_prefix="v3",
-            metric="mrr",
-        )
-
     gallery = [
         ("fig01_headline_metrics.png", "SCSA-PLUS vs baselines with paper targets"),
         ("fig02_all_variants.png", "Full algorithm variant comparison"),
@@ -124,7 +112,5 @@ def generate_v3_figures(reports_dir: Path, cfg: V3Config) -> dict[str, Path]:
         )
     if "ranking_shifts" in paths:
         gallery.append(("fig08_ranking_shifts.png", "PCA ranking shift analysis"))
-    if "legacy_mrr" in paths:
-        gallery.append(("fig09_legacy_mrr.png", "Legacy validation"))
     write_figures_index(figures_dir, gallery)
     return paths

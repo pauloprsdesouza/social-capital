@@ -24,7 +24,7 @@ Composite score per tweet:
 3. **pca1_score** = first principal component
 4. For each algorithm in V2 recommendations, append `-SCSA_PLUS_V3` and re-rank by `pca1_score`
 
-Output structure matches `src/Database/output_v3.csv` (original rows + PCA variants).
+Output CSV columns match the original V3 notebook export (base algorithms + PCA variants).
 
 ## 3. Re-ranking protocol
 
@@ -45,14 +45,16 @@ Output structure matches `src/Database/output_v3.csv` (original rows + PCA varia
 
 Paper targets (§26): SCSA-PLUS MRR ≈ 0.793, MAP ≈ 0.777, NDCG ≈ 0.788.
 
-Measured values depend on reputation fallback, PCA feature set, and trial-only re-ranking (not full candidate pool). See `reports/v3_baseline/report.md` for current numbers and legacy comparison.
+Measured values depend on reputation fallback, PCA feature set, and trial-only re-ranking (not full candidate pool). See `recsocial_py/reports/v3/report.md` and `recsocial_py/reports/validation_summary.md` for current numbers.
+
+> **Note:** In V2, the suffix `SCSA_PLUS_V3` re-ranks by V2 component scores. In V3, the same suffix name means PCA re-ranking. See [Version comparison](../VERSION_COMPARISON.md).
 
 ## 6. Run
 
 ```bash
 cd recsocial_py
 pip install -e ".[dev]"
-python scripts/run_v3.py
+python -m recsocial.cli run v3
 ```
 
-Or: `python -m recsocial.cli v3 experiment --config configs/v3.yaml`
+Or step-by-step: `python -m recsocial.cli v3 experiment --config configs/v3.yaml`

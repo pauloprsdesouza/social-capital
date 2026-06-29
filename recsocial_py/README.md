@@ -1,78 +1,92 @@
-# recsocial_py
+# recsocial
 
-Python package for Social Capital recommender reproduction (V1 / V2 / V3 vertical slices).
+Python package reproducing three Social Capital recommender papers (V1 / V2 / V3).
 
-## Quick start
+Full documentation: **[../docs/README.md](../docs/README.md)** · Tutorial: **[../docs/TUTORIAL.md](../docs/TUTORIAL.md)**
+
+## Install
 
 ```bash
 pip install -e ".[dev]"
+pytest tests/ -q
+```
 
-# Run all three papers end-to-end (preprocess → score → experiment → reports → validation)
+## Run
+
+```bash
+# All versions + paper validation
 python -m recsocial.cli run all
 
-# Or use the convenience script
-python scripts/run_all.py
+# Single version
+python -m recsocial.cli run v1
+python -m recsocial.cli run v2
+python -m recsocial.cli run v3
 
-# Validate existing reports against paper reference values
+# Validate only
 python -m recsocial.cli validate
 ```
 
-Reports: `reports/v1/report.md`, `reports/v2/report.md`, `reports/v3/report.md`  
-Cross-paper validation: `reports/validation_summary.md`
+## Outputs
 
-## Structure
+| Path | Content |
+|------|---------|
+| `reports/v1/report.md` | FedCSIS 2022 results |
+| `reports/v2/report.md` | AMCIS 2024 results + figure validation |
+| `reports/v3/report.md` | SCSA-PLUS + PCA results |
+| `reports/validation_summary.md` | Cross-paper pass/partial/fail |
+| `reports/v*/figures/` | Publication-style charts |
+
+## Package structure
 
 ```text
-configs/          v1.yaml, v2.yaml, v3.yaml, reference_results.yaml (V2 targets)
-data/raw/         ratings.csv, tweets.csv, users_twitter.csv
-data/v1|v2|v3/    Processed + interim CSVs per slice
-reports/v1|v2|v3/ Metrics, figures, and report.md per slice
-reports/          validation_summary.md (cross-paper validation)
-scripts/          run_all.py, run_v1.py, run_v2.py, run_v3.py
 src/recsocial/
-  cli.py          recsocial run|validate|v1|v2|v3
-  shared/         evaluation, pipeline, paper_validation, reference_validation
-  slices/v1/      FedCSIS 2022 baseline
-  slices/v2/      AMCIS 2024 enhanced components + re-ranking
-  slices/v3/      SCSA-PLUS + PCA + paired t-tests
-tests/            Unit and paper-validation tests
+  cli.py                 Entry point (recsocial command)
+  shared/                Evaluation, pipeline, validation, visualization
+    algorithms.py        Canonical algorithm names
+    pipeline.py          run_v1|v2|v3_pipeline, run_all_pipelines
+    paper_validation.py  Cross-paper target comparison
+  slices/
+    v1/                  FedCSIS baseline (migrate, social_capital, experiment)
+    v2/                  AMCIS enhanced components + re-ranking
+    v3/                  SCSA-PLUS + PCA + statistics
+configs/
+  v1.yaml, v2.yaml, v3.yaml
+  reference_results.yaml   V2 AMCIS figure targets (Figs 3–10)
 ```
 
-## Commands
+## Config files
+
+| File | Version | Key settings |
+|------|---------|--------------|
+| `configs/v1.yaml` | V1 | influence, sentiment, `paper_targets`, `map_protocol: fedcsis_pooled` |
+| `configs/v2.yaml` | V2 | component weights, STATE_ART, `reference_results.yaml` validation |
+| `configs/v3.yaml` | V3 | SCSA-PLUS, PCA, `paper_targets`, paired t-tests |
+
+## CLI reference
 
 | Command | Description |
 |---------|-------------|
-| `recsocial run all` | V1 → V2 → V3 full pipeline + validation |
+| `recsocial run all` | Full pipeline V1→V2→V3 + validation |
 | `recsocial run v1\|v2\|v3` | Single slice pipeline |
-| `recsocial run v1 --validate` | Run V1 then validate all slices |
-| `recsocial validate` | Compare reports to paper targets |
-| `recsocial v1 experiment` | Individual step (also v2, v3) |
-| `recsocial v1 plot` | Regenerate figures from saved CSVs |
+| `recsocial validate` | Compare all reports to paper targets |
+| `recsocial v1 preprocess\|score\|experiment\|plot\|report` | V1 granular steps |
+| `recsocial v2 preprocess\|score\|experiment\|plot` | V2 granular steps |
+| `recsocial v3 preprocess\|score\|experiment\|plot` | V3 granular steps |
 
-## Paper validation
+## Python API
 
-Each slice is validated against its paper reference values:
+```python
+from recsocial.shared.pipeline import run_all_pipelines, package_root
+from recsocial.shared.paper_validation import validate_all_papers
+from recsocial.slices.v2.experiment import run_v2_experiment
+from recsocial.slices.v2.config import load_v2_config
 
-| Slice | Paper | Reference source | Tolerance |
-|-------|-------|------------------|-----------|
-| V1 | FedCSIS 2022 | `configs/v1.yaml` → `paper_targets` | ±0.05 |
-| V2 | AMCIS 2024 | `configs/reference_results.yaml` (Figs 3–10) | ±0.03 strict / ±0.05 relaxed |
-| V3 | SCSA-PLUS §26 | `configs/v3.yaml` → `paper_targets` | ±0.02 |
-
-```bash
-pytest tests/shared/test_paper_validation.py tests/v2/test_v2_reference_validation.py
+root = package_root()
+results = validate_all_papers(root)
 ```
 
-## Architecture
+## Further reading
 
-```text
-shared/                 Cross-cutting, slice-agnostic
-  pipeline.py           End-to-end run orchestration
-  paper_validation.py   Unified V1/V2/V3 paper comparison
-  reference_validation.py  V2 figure-level AMCIS validation
-  experiment_runner.py  Standard evaluate → persist → report flow
-
-slices/v1|v2|v3/        Vertical slices — domain logic only
-```
-
-See [../docs/v1/reproduction_notes.md](../docs/v1/reproduction_notes.md) and sibling v2/v3 docs for assumptions.
+- [Version comparison](../docs/VERSION_COMPARISON.md) — differences among V1, V2, V3
+- [Architecture](../docs/ARCHITECTURE.md) — module map and data flow
+- [Improving algorithms](../docs/IMPROVING.md) — how to tune and extend

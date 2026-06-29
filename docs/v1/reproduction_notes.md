@@ -7,12 +7,12 @@ Per SDD §23. Every assumption used in V1 must be recorded here.
 ## 1. Dataset schema
 
 **Ambiguity:** Paper does not publish full dataset schema.  
-**V1 assumption:** Derive SDD schema from `tweets.csv` + `database/ratingv2.csv`. Tweet text sourced from `output_recommendations.csv` or DynamoDB export when available.
+**V1 assumption:** Derive SDD schema from `data/raw/tweets.csv` and `data/raw/ratings.csv`. Tweet text is taken from the raw export when available.
 
 ## 2. Text preprocessing
 
 **Ambiguity:** Exact tokenization/stopword rules not specified.  
-**V1 assumption:** English pipeline per SDD §9 (`lowercase`, `remove_urls`, `remove_stopwords`, `ngram_range: [1,2]`). Legacy Portuguese processing in `TweetAnalyzer.py` is **not** used for V1 baseline.
+**V1 assumption:** English pipeline per SDD §9 (`lowercase`, `remove_urls`, `remove_stopwords`, `ngram_range: [1,2]`).
 
 ## 3. User profile update
 

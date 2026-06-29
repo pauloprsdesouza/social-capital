@@ -8,7 +8,6 @@ import pandas as pd
 
 from recsocial.shared.visualization.charts import (
     plot_grouped_metrics_bar,
-    plot_legacy_comparison,
     plot_precision_at_k,
     plot_ttest_heatmap,
 )
@@ -67,27 +66,9 @@ def generate_v2_figures(
         ),
     }
 
-    legacy_path = reports_dir / "legacy_metrics_comparison.csv"
-    if legacy_path.exists():
-        legacy = pd.read_csv(legacy_path)
-        paths["legacy_mrr"] = plot_legacy_comparison(
-            legacy,
-            figures_dir / "fig04_legacy_mrr.png",
-            title="V2 — Reproduction vs Legacy (MRR)",
-            version_prefix="v2",
-            metric="mrr",
-        )
-        paths["legacy_ndcg"] = plot_legacy_comparison(
-            legacy,
-            figures_dir / "fig05_legacy_ndcg.png",
-            title="V2 — Reproduction vs Legacy (NDCG)",
-            version_prefix="v2",
-            metric="ndcg",
-        )
-
     if ttests is not None and not ttests.empty:
         ttests.to_csv(reports_dir / "paired_ttests.csv", index=False)
-        for i, metric in enumerate(("mrr", "map", "ndcg"), start=6):
+        for i, metric in enumerate(("mrr", "map", "ndcg"), start=4):
             paths[f"ttest_{metric}"] = plot_ttest_heatmap(
                 ttests,
                 figures_dir / f"fig0{i}_ttest_{metric}.png",
@@ -103,15 +84,15 @@ def generate_v2_figures(
         if "recency_score" in comp.columns:
             paths["recency_dist"] = plot_distribution(
                 comp["recency_score"],
-                figures_dir / "fig09_recency_distribution.png",
-                title="V2 — Recency Score Distribution (MainV2)",
+                figures_dir / "fig07_recency_distribution.png",
+                title="V2 — Recency Score Distribution",
                 xlabel="recency_score",
             )
         if "engagement_score" in comp.columns:
             paths["engagement_dist"] = plot_distribution(
                 comp["engagement_score"],
-                figures_dir / "fig10_engagement_distribution.png",
-                title="V2 — Engagement Score Distribution (MainV2)",
+                figures_dir / "fig08_engagement_distribution.png",
+                title="V2 — Engagement Score Distribution",
                 xlabel="engagement_score",
             )
 
@@ -120,20 +101,17 @@ def generate_v2_figures(
         ("fig02_headline_variants.png", "Headline B1 / SC / SCSA families"),
         ("fig03_precision_at_k.png", "Precision@1–5 (paper requirement)"),
     ]
-    if "legacy_mrr" in paths:
-        gallery.extend(
-            [
-                ("fig04_legacy_mrr.png", "Legacy validation — MRR"),
-                ("fig05_legacy_ndcg.png", "Legacy validation — NDCG"),
-            ]
-        )
     if ttests is not None and not ttests.empty:
         gallery.extend(
             [
-                ("fig06_ttest_mrr.png", "Paired t-tests — MRR"),
-                ("fig07_ttest_map.png", "Paired t-tests — MAP"),
-                ("fig08_ttest_ndcg.png", "Paired t-tests — NDCG"),
+                ("fig04_ttest_mrr.png", "Paired t-tests — MRR"),
+                ("fig05_ttest_map.png", "Paired t-tests — MAP"),
+                ("fig06_ttest_ndcg.png", "Paired t-tests — NDCG"),
             ]
         )
+    if "recency_dist" in paths:
+        gallery.append(("fig07_recency_distribution.png", "Recency score distribution"))
+    if "engagement_dist" in paths:
+        gallery.append(("fig08_engagement_distribution.png", "Engagement score distribution"))
     write_figures_index(figures_dir, gallery)
     return paths

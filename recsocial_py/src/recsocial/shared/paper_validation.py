@@ -20,7 +20,7 @@ PAPER_TITLES = {
     "v3": "SCSA-PLUS — Enhanced Personalized Recommendations",
 }
 
-V1_ALIASES = {"B1": "B1", "CS": "CS-PLUS", "SC": "SC", "SCSA": "SC+SA"}
+from recsocial.shared.algorithms import V1_PAPER_LABELS as V1_ALIASES
 
 
 @dataclass(frozen=True)

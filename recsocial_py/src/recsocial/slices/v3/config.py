@@ -7,7 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from recsocial.shared.config_loader import load_yaml_config, resolve_paths_in_dict
-from recsocial.shared.config_models import EvaluationConfig, RerankConfig
+from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, RerankConfig
 from recsocial.slices.v1.config import AppConfig, load_config
 
 
@@ -51,17 +51,10 @@ class PcaConfigV3(BaseModel):
     score_component: int = 0
 
 
-class StatisticsConfig(BaseModel):
-    paired_t_test: bool = True
-    significance_level: float = 0.05
-    comparisons: list[list[str]] = Field(default_factory=list)
-
-
 class V3PathsConfig(BaseModel):
     processed_v3_dir: str = "data/v3/processed"
     interim_v3_dir: str = "data/v3/interim"
     reports_v3_dir: str = "reports/v3"
-    legacy_output_v3: str = "data/raw/legacy/v3_output.csv"
     v2_config_path: str = "configs/v2.yaml"
     v1_config_path: str = "configs/v1.yaml"
 
@@ -83,7 +76,7 @@ class V3Config(RerankConfig):
     social_capital: SocialCapitalV3Config = Field(default_factory=SocialCapitalV3Config)
     pca: PcaConfigV3 = Field(default_factory=PcaConfigV3)
     evaluation: EvaluationConfig = Field(default_factory=EvaluationConfig)
-    statistics: StatisticsConfig = Field(default_factory=StatisticsConfig)
+    statistics: PairedTestConfig = Field(default_factory=PairedTestConfig)
     paths: V3PathsConfig = Field(default_factory=V3PathsConfig)
     paper_targets: PaperTargetsV3 = Field(default_factory=PaperTargetsV3)
 

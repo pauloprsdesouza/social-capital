@@ -8,7 +8,7 @@ recency:
 
 social_capital:
   normalize_components: true
-  scaling_mode: legacy_notebook
+  scaling_mode: standard
   author_influence_mode: paper_compatible
   use_extended_formula: false
   weights:
@@ -50,7 +50,6 @@ paths:
   processed_v2_dir: data/v2/processed
   interim_v2_dir: data/v2/interim
   reports_v2_dir: reports/v2
-  legacy_recommendations: data/raw/legacy/v2_recommendations.csv
 
 base_algorithms:
   - B1

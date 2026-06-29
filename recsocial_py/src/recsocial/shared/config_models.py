@@ -30,6 +30,14 @@ class EvaluationConfig(BaseModel):
     map_protocol: str = "sdd"
 
 
+class PairedTestConfig(BaseModel):
+    """Paired t-test settings shared by V2 and V3 experiments."""
+
+    paired_t_test: bool = True
+    significance_level: float = 0.05
+    comparisons: list[list[str]] = Field(default_factory=list)
+
+
 class RerankConfig(BaseModel):
     """Shared re-ranking trial structure used by V2 and V3."""
 

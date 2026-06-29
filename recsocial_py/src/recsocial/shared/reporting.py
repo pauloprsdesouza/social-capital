@@ -33,25 +33,5 @@ def compare_target_row(
     return f"| {algo} | {metric} | {measured:.3f} | {target:.2f} | {delta:+.3f} | {status} |"
 
 
-def format_legacy_bullets(
-    comparison: pd.DataFrame,
-    *,
-    version_prefix: str,
-    limit: int | None = None,
-) -> list[str]:
-    lines: list[str] = []
-    frame = comparison.head(limit) if limit else comparison
-    for row in frame.itertuples(index=False):
-        mrr_cur = getattr(row, f"mrr_{version_prefix}")
-        map_cur = getattr(row, f"map_{version_prefix}")
-        ndcg_cur = getattr(row, f"ndcg_{version_prefix}")
-        lines.append(
-            f"- **{row.algorithm}**: MRR {mrr_cur:.3f} vs legacy {row.mrr_legacy} | "
-            f"MAP {map_cur:.3f} vs {row.map_legacy} | "
-            f"NDCG {ndcg_cur:.3f} vs {row.ndcg_legacy}"
-        )
-    return lines
-
-
 def write_markdown_report(output_path: Path, sections: list[str]) -> None:
     output_path.write_text("\n".join(sections), encoding="utf-8")
