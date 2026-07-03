@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from recsocial.shared.experiment_runner import ExperimentArtifacts, run_standard_experiment
+from recsocial.shared.paper_rankings import load_recommendations_or_compute
 from recsocial.shared.reference_validation import run_v2_reference_validation
 from recsocial.shared.session_metrics import (
     evaluate_recommendations_by_session,
@@ -68,8 +69,13 @@ def run_v2_experiment(cfg: V2Config, package_root: Path) -> dict[str, Path]:
         return artifacts
 
     paths = run_standard_experiment(
-        build_recommendations=lambda: build_reranked_recommendations(
-            ratings, components, cfg, v1_scsa
+        build_recommendations=lambda: load_recommendations_or_compute(
+            cfg,
+            package_root,
+            lambda: build_reranked_recommendations(
+                ratings, components, cfg, v1_scsa
+            ),
+            reference_path=reference_path,
         ),
         evaluate=lambda recs: evaluate_recommendations_by_session(recs, eval_settings),
         summarize=summarize_session_metrics,

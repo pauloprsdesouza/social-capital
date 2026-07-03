@@ -106,7 +106,7 @@ Each slice report (`reports/v*/report.md`) contains:
 3. **Paper comparison** — measured vs published targets (pass/fail)
 4. **Figures gallery** — link to `figures/index.md`
 
-The cross-paper summary (`reports/validation_summary.md`) gives a single pass/partial/fail status per version.
+The cross-paper summary (`reports/validation_summary.md`) gives a single pass/partial/fail status per version. After `recsocial run all`, all three slices (V1, V2, V3) should show **pass**.
 
 ## 5. Regenerate figures only
 

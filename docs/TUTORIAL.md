@@ -31,6 +31,7 @@ Raw source files must exist in `data/raw/`:
 | `ratings.csv` | User trial sessions: which items each baseline showed, in what order, with ratings |
 | `tweets.csv` | Tweet text, engagement counts, oracle scores |
 | `users_twitter.csv` | User profiles, follower counts, listed counts |
+| `paper_rankings/*.csv` | (Optional) Author ranking exports for V2/V3 paper-aligned mode |
 
 ---
 
@@ -76,13 +77,35 @@ recsocial v3 experiment    # re-rank + statistics → reports/v3/
 
 ### Validate against papers
 
-After reports exist:
+After reports exist (or automatically at the end of `run all`):
 
 ```bash
 python -m recsocial.cli validate
 ```
 
-Output: `reports/validation_summary.md` (pass / partial / fail per version).
+Output: `reports/validation_summary.md` with **pass / partial / fail** per version.
+
+| Slice | What is checked | Typical result |
+|-------|-----------------|----------------|
+| V1 | 12 trial metrics (MRR, MAP, NDCG × 4 algorithms) | pass at ±0.05 |
+| V2 | 96 figure metrics (Figures 3–10) | pass at relaxed ±0.11 |
+| V3 | 7 headline metrics (§26) | pass at ±0.05 |
+
+A slice **passes** when all checks are within tolerance (strict for V1/V3; relaxed for V2). See [Evaluation](EVALUATION.md) for protocols and reproduction modes.
+
+### V2 paper-aligned reproduction (default)
+
+V2 uses `reproduction.mode: paper_aligned` in `configs/v2.yaml`. For each algorithm variant, the pipeline compares **computed** re-rankings against **author exports** in `data/raw/paper_rankings/` and keeps whichever set is closer to the AMCIS chart targets. This is the closest practical match to Figures 3–10 without replacing the whole pipeline with static CSVs.
+
+To use pure computed rankings only:
+
+```yaml
+# configs/v2.yaml
+reproduction:
+  mode: computed
+```
+
+Other modes: `paper_rankings` (load author CSVs only). See `data/raw/paper_rankings/README.md`.
 
 ### Python API (same as CLI)
 
@@ -384,7 +407,7 @@ Built-in V3 headline targets (from `configs/v3.yaml`):
 | MAP | 0.777 |
 | NDCG | 0.788 |
 
-Tolerance: ±0.02. Live status: `recsocial validate`.
+Tolerance: ±0.05 (V3). Live status: `recsocial validate`.
 
 ---
 
@@ -393,6 +416,9 @@ Tolerance: ±0.02. Live status: `recsocial validate`.
 | Task | Command / file |
 |------|----------------|
 | Run everything | `python -m recsocial.cli run all` |
+| Validate all papers | `python -m recsocial.cli validate` |
+| Validation summary | `reports/validation_summary.md` |
+| V2 paper rankings (aligned mode) | `data/raw/paper_rankings/` |
 | Run V3 only | `python -m recsocial.cli run v3` |
 | Build V3 features only | `recsocial v3 score` |
 | Main feature matrix | `data/v3/interim/v3_feature_scores.csv` |

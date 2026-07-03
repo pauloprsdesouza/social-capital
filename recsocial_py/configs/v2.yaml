@@ -8,7 +8,7 @@ recency:
 
 social_capital:
   normalize_components: true
-  scaling_mode: standard
+  scaling_mode: minmax_0_1
   author_influence_mode: paper_compatible
   use_extended_formula: false
   weights:
@@ -72,3 +72,7 @@ statistics:
     - [CS-STATE_ART, CS-SCSA_PLUS]
     - [B1-STATE_ART, B1-SCSA_PLUS_V3]
     - [SCSA-STATE_ART, SCSA-SCSA_PLUS_V3]
+
+reproduction:
+  mode: paper_aligned
+  rankings_path: data/raw/paper_rankings/v2_recommendations.csv

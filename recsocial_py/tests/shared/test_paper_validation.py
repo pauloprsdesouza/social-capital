@@ -56,7 +56,7 @@ def test_v2_relaxed_reproduction_majority(validation: dict) -> None:
     if df.empty:
         pytest.skip("Missing V2 recommendations")
     rate = v2["summary"].n_pass_relaxed / v2["summary"].n_checks
-    assert rate >= 0.5, f"V2: only {rate:.0%} within relaxed tolerance"
+    assert rate >= 0.9, f"V2: only {rate:.0%} within relaxed tolerance"
 
 
 def test_all_slices_have_validation_data(validation: dict) -> None:

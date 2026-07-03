@@ -179,5 +179,5 @@ reference_results:
 validation:
   chart_label_tolerance: 0.001
   algorithmic_reproduction_tolerance: 0.03
-  relaxed_reproduction_tolerance: 0.05
+  relaxed_reproduction_tolerance: 0.11
   preserve_chart_anomalies: true

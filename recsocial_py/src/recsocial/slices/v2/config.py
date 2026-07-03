@@ -7,7 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from recsocial.shared.config_loader import load_yaml_config, resolve_paths_in_dict
-from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, RerankConfig
+from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, ReproductionConfig, RerankConfig
 from recsocial.slices.v1.config import AppConfig, PathsConfig, load_config
 
 
@@ -57,6 +57,7 @@ class V2Config(RerankConfig):
     state_art: StateArtConfig = Field(default_factory=StateArtConfig)
     evaluation: EvaluationConfig = Field(default_factory=EvaluationConfig)
     statistics: PairedTestConfig = Field(default_factory=PairedTestConfig)
+    reproduction: ReproductionConfig = Field(default_factory=ReproductionConfig)
     paths: V2PathsConfig = Field(default_factory=V2PathsConfig)
     trial_algo_map: dict[str, str] = Field(
         default_factory=lambda: {"SC": "SC", "SCSA": "SCSA", "CS": "CS", "B1": "B1"}

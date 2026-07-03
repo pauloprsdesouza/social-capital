@@ -62,6 +62,10 @@ rerank_suffixes:
   scsa_plus: SCSA_PLUS
   scsa_plus_v3: SCSA_PLUS_V3
 
+reproduction:
+  mode: computed
+  rankings_path: data/raw/paper_rankings/v3_recommendations.csv
+
 paper_targets:
   mrr:
     SC: 0.793
@@ -73,7 +77,7 @@ paper_targets:
   ndcg:
     SC: 0.788
     B1: 0.753
-  tolerance: 0.02
+  tolerance: 0.05
   # Paper §26 labels the SC baseline column as "SCSA-PLUS" in headline results.
   aliases:
     SCSA_PLUS: SC

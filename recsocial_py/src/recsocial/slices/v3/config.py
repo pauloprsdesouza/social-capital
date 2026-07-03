@@ -7,7 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from recsocial.shared.config_loader import load_yaml_config, resolve_paths_in_dict
-from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, RerankConfig
+from recsocial.shared.config_models import EvaluationConfig, PairedTestConfig, ReproductionConfig, RerankConfig
 from recsocial.slices.v1.config import AppConfig, load_config
 
 
@@ -77,6 +77,7 @@ class V3Config(RerankConfig):
     pca: PcaConfigV3 = Field(default_factory=PcaConfigV3)
     evaluation: EvaluationConfig = Field(default_factory=EvaluationConfig)
     statistics: PairedTestConfig = Field(default_factory=PairedTestConfig)
+    reproduction: ReproductionConfig = Field(default_factory=ReproductionConfig)
     paths: V3PathsConfig = Field(default_factory=V3PathsConfig)
     paper_targets: PaperTargetsV3 = Field(default_factory=PaperTargetsV3)
 

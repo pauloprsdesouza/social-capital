@@ -49,3 +49,12 @@ class RerankConfig(BaseModel):
             "scsa_plus_v3": "SCSA_PLUS_V3",
         }
     )
+
+
+class ReproductionConfig(BaseModel):
+    """How to source recommendation rankings for paper reproduction."""
+
+    # computed: derive from data/raw CSVs + scoring pipeline (default)
+    # paper_rankings: load author exports from data/raw/paper_rankings/
+    mode: str = "computed"
+    rankings_path: str | None = None

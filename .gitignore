@@ -8,7 +8,7 @@ __pycache__/
 
 # Pre-migration / notebook artifacts (not part of the package)
 legacy/
-src/
+/src/
 database/
 
 # Generated experiment outputs (regenerate with: recsocial run all)

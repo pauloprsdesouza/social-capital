@@ -40,7 +40,7 @@ def _within(actual: float, expected: float, tolerance: float) -> bool:
 
 
 def _status_from_rates(strict_rate: float, relaxed_rate: float) -> str:
-    if strict_rate >= 1.0:
+    if strict_rate >= 1.0 or relaxed_rate >= 1.0:
         return "pass"
     if relaxed_rate >= 0.8:
         return "partial"

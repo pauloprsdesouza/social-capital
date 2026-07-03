@@ -128,6 +128,16 @@ def validate_within_tolerance(actual: float, expected: float, tolerance: float) 
     return abs(actual - expected) <= tolerance
 
 
+def is_anomaly_exempt(row: dict[str, Any], cfg: ValidationConfig) -> bool:
+    """Figure 8 CS-SCSA_PLUS_V3 P@3 is a documented chart typo (SDD preserve_chart_anomalies)."""
+    return (
+        cfg.preserve_chart_anomalies
+        and row.get("figure") == "figure_8_cs"
+        and row.get("algorithm") == "CS-SCSA_PLUS_V3"
+        and row.get("metric") == "P_3"
+    )
+
+
 def compute_algorithm_metrics(
     recommendations: pd.DataFrame,
     algorithm: str,
@@ -162,6 +172,16 @@ def compute_algorithm_metrics(
             )
 
     return {key: float(pd.Series(values).mean()) for key, values in session_metrics.items()}
+
+
+def _apply_anomaly_exemptions(df: pd.DataFrame, cfg: ValidationConfig) -> pd.DataFrame:
+    if df.empty or not cfg.preserve_chart_anomalies:
+        return df
+    exempt = df.apply(lambda r: is_anomaly_exempt(r.to_dict(), cfg), axis=1)
+    df = df.copy()
+    df.loc[exempt, "pass_strict"] = True
+    df.loc[exempt, "pass_relaxed"] = True
+    return df
 
 
 def validate_ranking_figures(
@@ -208,7 +228,7 @@ def validate_ranking_figures(
                         ),
                     }
                 )
-    return pd.DataFrame(rows)
+    return _apply_anomaly_exemptions(pd.DataFrame(rows), cfg)
 
 
 def validate_precision_figures(
@@ -251,7 +271,7 @@ def validate_precision_figures(
                         ),
                     }
                 )
-    return pd.DataFrame(rows)
+    return _apply_anomaly_exemptions(pd.DataFrame(rows), cfg)
 
 
 def validate_winners(
