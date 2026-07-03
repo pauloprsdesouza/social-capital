@@ -14,19 +14,11 @@ from recsocial.shared.session_metrics import (
 from recsocial.slices.v1.config import AppConfig
 from recsocial.slices.v1.data_loader import load_processed_bundle
 from recsocial.slices.v1.migrate import migrate_to_sdd_schema
-from recsocial.slices.v1.recommenders import ALGO_MAP, Recommender
+from recsocial.shared.algorithms import V1_PAPER_ALGORITHM_ORDER, V1_PAPER_LABELS
+from recsocial.slices.v1.recommenders import Recommender
 from recsocial.slices.v1.social_capital import build_score_engine, score_all_news
 from recsocial.slices.v1.text_features import build_hybrid_feature_matrix
 from recsocial.slices.v1.user_profile import UserProfileStore
-
-
-ALGORITHMS = ["SC", "SC+SA", "CS-PLUS", "B1"]
-TRIAL_ALGO_TO_CANONICAL = {
-    "SC": "SC",
-    "SCSA": "SC+SA",
-    "CS": "CS-PLUS",
-    "B1": "B1",
-}
 
 
 def ensure_processed_data(cfg: AppConfig) -> dict[str, pd.DataFrame]:
@@ -70,7 +62,7 @@ def evaluate_trial_ratings(cfg: AppConfig, ratings_df: pd.DataFrame) -> pd.DataF
     """Evaluate stored user-trial rankings (paper reproduction path)."""
     settings = settings_from_evaluation_config(
         cfg.evaluation,
-        algorithm_aliases=TRIAL_ALGO_TO_CANONICAL,
+        algorithm_aliases=V1_PAPER_LABELS,
     )
     df = ratings_df.copy().rename(columns={"position": settings.rank_col})
     return evaluate_recommendations_by_session(df, settings)
@@ -85,7 +77,7 @@ def run_reranking_experiment(
     """Re-score and re-rank trial items; evaluate with stored ratings."""
     ratings = data["ratings"].copy()
     ratings["algorithm"] = ratings["algorithm"].map(
-        lambda a: TRIAL_ALGO_TO_CANONICAL.get(a, a)
+        lambda a: V1_PAPER_LABELS.get(a, a)
     )
     rec_rows: list[dict] = []
 
@@ -178,7 +170,7 @@ def run_experiment(cfg: AppConfig) -> dict[str, Path]:
     gen_rows: list[dict] = []
     all_news = data["news"]["news_id"].astype(str).tolist()
     for uid in data["ratings"]["user_id"].unique():
-        for algo in ALGORITHMS:
+        for algo in V1_PAPER_ALGORITHM_ORDER:
             for rec in recommender.recommend(uid, all_news, algo):
                 gen_rows.append(rec.model_dump())
     pd.DataFrame(gen_rows).to_csv(paths["generated_recommendations"], index=False)

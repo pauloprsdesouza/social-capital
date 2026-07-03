@@ -8,18 +8,19 @@ from pathlib import Path
 from recsocial.shared.paper_validation import validate_all_papers, write_cross_paper_validation_report
 from recsocial.shared.pipeline import (
     package_root,
+    prepare_v3_inputs,
+    preprocess_v2,
     run_all_pipelines,
     run_v1_pipeline,
     run_v2_pipeline,
     run_v3_pipeline,
+    score_v1_interim,
+    score_v2_components,
 )
 from recsocial.slices.v1.config import load_config
-from recsocial.slices.v1.experiment import ensure_processed_data, run_experiment
-from recsocial.slices.v1.migrate import migrate_to_sdd_schema
-from recsocial.slices.v1.social_capital import build_score_engine, score_all_news
+from recsocial.slices.v1.experiment import run_experiment
 from recsocial.slices.v2.config import load_v2_config
 from recsocial.slices.v2.experiment import run_v2_experiment
-from recsocial.slices.v2.features import enrich_news_for_v2, score_components
 from recsocial.slices.v3.config import load_v3_config
 from recsocial.slices.v3.experiment import run_v3_experiment
 from recsocial.slices.v3.features import build_v3_features
@@ -82,6 +83,8 @@ def _add_v3_config(parser: argparse.ArgumentParser) -> None:
 # --- V1 ---
 
 def cmd_v1_preprocess(args: argparse.Namespace) -> None:
+    from recsocial.slices.v1.migrate import migrate_to_sdd_schema
+
     cfg = load_config(args.config, base_dir=_package_root())
     for name, path in migrate_to_sdd_schema(cfg).items():
         print(f"{name}: {path}")
@@ -89,12 +92,7 @@ def cmd_v1_preprocess(args: argparse.Namespace) -> None:
 
 def cmd_v1_score(args: argparse.Namespace) -> None:
     cfg = load_config(args.config, base_dir=_package_root())
-    data = ensure_processed_data(cfg)
-    engine = build_score_engine(data["users"], data["news"], data["comments"], cfg)
-    out = Path(cfg.paths.interim_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    score_all_news(engine, data["news"], sentiment_enabled=False).to_csv(out / "scored_news_sc.csv", index=False)
-    score_all_news(engine, data["news"], sentiment_enabled=True).to_csv(out / "scored_news_scsa.csv", index=False)
+    out = score_v1_interim(cfg)
     print(f"Wrote scores to {out}")
 
 
@@ -131,13 +129,13 @@ def cmd_v1_report(args: argparse.Namespace) -> None:
 
 def cmd_v2_preprocess(args: argparse.Namespace) -> None:
     cfg = load_v2_config(args.config, base_dir=_package_root())
-    path = enrich_news_for_v2(cfg, cfg.load_v1(_package_root()))
+    path = preprocess_v2(cfg, _package_root())
     print(f"news_enriched: {Path(cfg.paths.processed_v2_dir) / 'news_enriched.csv'} ({len(path)} rows)")
 
 
 def cmd_v2_score(args: argparse.Namespace) -> None:
     cfg = load_v2_config(args.config, base_dir=_package_root())
-    frame = score_components(cfg, cfg.load_v1(_package_root()))
+    frame = score_v2_components(cfg, _package_root())
     print(f"Wrote {len(frame.df)} rows to {cfg.paths.interim_v2_dir}/component_scores.csv")
 
 
@@ -172,8 +170,7 @@ def cmd_v2_experiment(args: argparse.Namespace) -> None:
 
 def cmd_v3_preprocess(args: argparse.Namespace) -> None:
     cfg = load_v3_config(args.config, base_dir=_package_root())
-    v2_cfg = load_v2_config(cfg.paths.v2_config_path, base_dir=_package_root())
-    enrich_news_for_v2(v2_cfg, cfg.load_v1(_package_root()))
+    prepare_v3_inputs(cfg, _package_root())
     print(f"Prepared V2 inputs for V3 under {cfg.paths.processed_v3_dir}")
 
 

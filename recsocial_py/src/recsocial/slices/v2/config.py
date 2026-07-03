@@ -31,7 +31,7 @@ class RecencyConfig(BaseModel):
 
 class SocialCapitalV2Config(BaseModel):
     normalize_components: bool = True
-    scaling_mode: str = "standard"
+    scaling_mode: str = "minmax_0_1"
     author_influence_mode: str = "paper_compatible"
     weights: SocialCapitalWeights = Field(default_factory=SocialCapitalWeights)
     use_extended_formula: bool = False
@@ -51,6 +51,7 @@ class V2PathsConfig(PathsConfig):
 
 class V2Config(RerankConfig):
     v1_config_path: str = "configs/v1.yaml"
+    reference_results_path: str = "configs/reference_results.yaml"
     random_seed: int = 42
     recency: RecencyConfig = Field(default_factory=RecencyConfig)
     social_capital: SocialCapitalV2Config = Field(default_factory=SocialCapitalV2Config)

@@ -43,7 +43,7 @@ def run_v2_experiment(cfg: V2Config, package_root: Path) -> dict[str, Path]:
 
     eval_settings = settings_from_evaluation_config(cfg.evaluation)
     reports_dir = Path(cfg.paths.reports_v2_dir)
-    reference_path = package_root / "configs" / "reference_results.yaml"
+    reference_path = package_root / cfg.reference_results_path
     output_paths = {
         "recommendations": reports_dir / "v2_recommendations.csv",
         "metrics_detail": reports_dir / "v2_metrics_detail.csv",

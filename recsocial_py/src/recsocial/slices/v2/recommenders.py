@@ -46,5 +46,6 @@ def build_reranked_recommendations(
         base_algorithms=cfg.base_algorithms,
         rerank_suffixes=cfg.rerank_suffixes,
         scsa_score_specs=scsa_specs,
+        top_k=cfg.evaluation.ndcg_k,
     )
     return result if not result.empty else empty_recommendations()

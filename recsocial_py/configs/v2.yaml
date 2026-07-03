@@ -1,4 +1,5 @@
 v1_config_path: configs/v1.yaml
+reference_results_path: configs/reference_results.yaml
 random_seed: 42
 
 recency:
@@ -41,26 +42,9 @@ evaluation:
     - ndcg_at_k
 
 paths:
-  raw_ratings: data/raw/ratings.csv
-  raw_tweets: data/raw/tweets.csv
-  raw_users_twitter: data/raw/users_twitter.csv
-  processed_dir: data/v1/processed
-  interim_dir: data/v1/interim
-  reports_dir: reports/v1
   processed_v2_dir: data/v2/processed
   interim_v2_dir: data/v2/interim
   reports_v2_dir: reports/v2
-
-base_algorithms:
-  - B1
-  - CS
-  - SC
-  - SCSA
-
-rerank_suffixes:
-  state_art: STATE_ART
-  scsa_plus: SCSA_PLUS
-  scsa_plus_v3: SCSA_PLUS_V3
 
 statistics:
   paired_t_test: true

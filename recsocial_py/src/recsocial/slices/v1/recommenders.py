@@ -14,16 +14,6 @@ from recsocial.slices.v1.user_profile import UserProfileStore
 
 AlgorithmName = Literal["SC", "SC+SA", "CS-PLUS", "B1", "HYBRID"]
 
-ALGO_MAP = {
-    "SC": "SC",
-    "SCSA": "SC+SA",
-    "SC+SA": "SC+SA",
-    "CS": "CS-PLUS",
-    "CS-PLUS": "CS-PLUS",
-    "B1": "B1",
-    "HYBRID": "HYBRID",
-}
-
 
 class Recommender:
     def __init__(

@@ -51,17 +51,6 @@ statistics:
     - [SC-STATE_ART, SC-SCSA_PLUS]
     - [SCSA-STATE_ART, SCSA-SCSA_PLUS]
 
-base_algorithms:
-  - B1
-  - CS
-  - SC
-  - SCSA
-
-rerank_suffixes:
-  state_art: STATE_ART
-  scsa_plus: SCSA_PLUS
-  scsa_plus_v3: SCSA_PLUS_V3
-
 reproduction:
   mode: computed
   rankings_path: data/raw/paper_rankings/v3_recommendations.csv

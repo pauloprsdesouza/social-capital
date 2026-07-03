@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from recsocial.shared.statistics import run_paired_t_tests
-
-__all__ = ["run_paired_t_tests", "correlation_matrix", "ranking_shift_analysis"]
+__all__ = ["correlation_matrix", "ranking_shift_analysis"]
 
 
 def correlation_matrix(features: pd.DataFrame) -> pd.DataFrame:

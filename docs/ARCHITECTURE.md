@@ -86,7 +86,8 @@ flowchart TB
 | `paper_metrics.py` | Legacy notebook rank-column metrics |
 | `reranking.py` | Score-based re-ranking of trial items |
 | `experiment_runner.py` | Standard evaluate → persist → report flow (V2/V3) |
-| `pipeline.py` | `run_v1_pipeline`, `run_v2_pipeline`, `run_v3_pipeline`, `run_all_pipelines` |
+| `algorithms.py` | Canonical algorithm codes, paper labels, rerank suffixes |
+| `pipeline.py` | End-to-end runners + granular stages (`score_v1_interim`, `preprocess_v2`, …) |
 | `paper_validation.py` | Cross-paper validation (V1 + V2 + V3) |
 | `reference_validation.py` | V2 AMCIS figure-level validation |
 | `statistics.py` | Paired t-tests |

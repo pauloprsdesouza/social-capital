@@ -18,11 +18,8 @@ from recsocial.slices.v3.features import build_v3_features
 from recsocial.slices.v3.recommenders import build_v3_recommendations
 from recsocial.slices.v3.figures import generate_v3_figures
 from recsocial.slices.v3.reporting import write_v3_report
-from recsocial.slices.v3.statistics import (
-    correlation_matrix,
-    ranking_shift_analysis,
-    run_paired_t_tests,
-)
+from recsocial.shared.statistics import run_paired_t_tests
+from recsocial.slices.v3.statistics import correlation_matrix, ranking_shift_analysis
 
 
 def run_v3_experiment(cfg: V3Config, package_root: Path) -> dict[str, Path]:

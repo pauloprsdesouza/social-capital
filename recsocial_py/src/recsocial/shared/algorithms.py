@@ -33,6 +33,10 @@ RERANK_SUFFIXES: dict[str, str] = {
 }
 
 
+# Display order for V1 figures and reports (FedCSIS paper)
+V1_PAPER_ALGORITHM_ORDER: tuple[str, ...] = tuple(V1_PAPER_LABELS.values())
+
+
 def paper_label_v1(code: str) -> str:
     """Map internal algorithm code to FedCSIS paper label."""
     return V1_PAPER_LABELS.get(code, code)

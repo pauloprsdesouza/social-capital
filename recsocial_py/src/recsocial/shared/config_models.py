@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+from recsocial.shared.algorithms import BASE_ALGORITHMS, RERANK_SUFFIXES
+
 
 class TextConfig(BaseModel):
     language: str = "en"
@@ -41,20 +43,13 @@ class PairedTestConfig(BaseModel):
 class RerankConfig(BaseModel):
     """Shared re-ranking trial structure used by V2 and V3."""
 
-    base_algorithms: list[str] = Field(default_factory=lambda: ["B1", "CS", "SC", "SCSA"])
-    rerank_suffixes: dict[str, str] = Field(
-        default_factory=lambda: {
-            "state_art": "STATE_ART",
-            "scsa_plus": "SCSA_PLUS",
-            "scsa_plus_v3": "SCSA_PLUS_V3",
-        }
-    )
+    base_algorithms: list[str] = Field(default_factory=lambda: list(BASE_ALGORITHMS))
+    rerank_suffixes: dict[str, str] = Field(default_factory=lambda: dict(RERANK_SUFFIXES))
 
 
 class ReproductionConfig(BaseModel):
     """How to source recommendation rankings for paper reproduction."""
 
-    # computed: derive from data/raw CSVs + scoring pipeline (default)
-    # paper_rankings: load author exports from data/raw/paper_rankings/
+    # computed | paper_rankings | paper_aligned (V2 default)
     mode: str = "computed"
     rankings_path: str | None = None

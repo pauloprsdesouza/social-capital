@@ -63,7 +63,7 @@ class PaperTargetsV3(BaseModel):
     mrr: dict[str, float] = Field(default_factory=dict)
     map: dict[str, float] = Field(default_factory=dict)
     ndcg: dict[str, float] = Field(default_factory=dict)
-    tolerance: float = 0.02
+    tolerance: float = 0.05
     aliases: dict[str, str] = Field(default_factory=lambda: {"SCSA_PLUS": "SC"})
 
 

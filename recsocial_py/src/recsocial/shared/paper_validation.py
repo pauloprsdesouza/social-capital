@@ -8,9 +8,12 @@ from typing import Any
 
 import pandas as pd
 
+from recsocial.shared.pipeline import package_root as package_root_fn
 from recsocial.shared.reference_validation import run_v2_reference_validation
 from recsocial.shared.reporting import write_markdown_report
+from recsocial.shared.algorithms import V1_PAPER_LABELS as V1_ALIASES
 from recsocial.slices.v1.config import load_config
+from recsocial.slices.v2.config import load_v2_config
 from recsocial.slices.v3.config import load_v3_config
 
 
@@ -19,8 +22,6 @@ PAPER_TITLES = {
     "v2": "AMCIS 2024 — Unlocking the Power of Social Capital",
     "v3": "SCSA-PLUS — Enhanced Personalized Recommendations",
 }
-
-from recsocial.shared.algorithms import V1_PAPER_LABELS as V1_ALIASES
 
 
 @dataclass(frozen=True)
@@ -216,10 +217,16 @@ def validate_v3_targets(
     )
 
 
-def validate_v2_targets(package_root: Path) -> tuple[pd.DataFrame, SliceValidationSummary]:
-    reference_path = package_root / "configs" / "reference_results.yaml"
-    recs_path = package_root / "reports" / "v2" / "v2_recommendations.csv"
-    reports_dir = package_root / "reports" / "v2"
+def validate_v2_targets(
+    package_root: Path | None = None,
+    *,
+    config_path: Path | None = None,
+) -> tuple[pd.DataFrame, SliceValidationSummary]:
+    root = package_root or package_root_fn()
+    cfg = load_v2_config(config_path or root / "configs" / "v2.yaml", base_dir=root)
+    reference_path = root / cfg.reference_results_path
+    reports_dir = Path(cfg.paths.reports_v2_dir)
+    recs_path = reports_dir / "v2_recommendations.csv"
 
     if not recs_path.exists() or not reference_path.exists():
         return pd.DataFrame(), SliceValidationSummary(
@@ -273,7 +280,7 @@ def validate_v2_targets(package_root: Path) -> tuple[pd.DataFrame, SliceValidati
 
 
 def validate_all_papers(package_root: Path | None = None) -> dict[str, Any]:
-    root = package_root or Path(__file__).resolve().parents[3]
+    root = package_root or package_root_fn()
     v1_df, v1_sum = validate_v1_targets(root)
     v2_df, v2_sum = validate_v2_targets(root)
     v3_df, v3_sum = validate_v3_targets(root)

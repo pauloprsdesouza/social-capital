@@ -13,11 +13,11 @@ from recsocial.shared.visualization.charts import (
     plot_precision_at_k,
 )
 from recsocial.shared.visualization.gallery import write_figures_index
+from recsocial.shared.algorithms import V1_PAPER_ALGORITHM_ORDER
 from recsocial.slices.v1.config import AppConfig
 
 
-V1_ALGORITHMS = ["B1", "CS-PLUS", "SC", "SC+SA"]
-PRECISION_BASELINES = ["B1", "CS-PLUS", "SC", "SC+SA"]
+PRECISION_BASELINES = list(V1_PAPER_ALGORITHM_ORDER)
 
 
 def generate_v1_figures(reports_dir: Path, cfg: AppConfig) -> dict[str, Path]:
@@ -37,7 +37,7 @@ def generate_v1_figures(reports_dir: Path, cfg: AppConfig) -> dict[str, Path]:
             summary,
             figures_dir / "fig01_metrics_comparison.png",
             title="V1 — MRR, MAP, NDCG by Algorithm (FedCSIS 2022)",
-            algorithms=V1_ALGORITHMS,
+            algorithms=V1_PAPER_ALGORITHM_ORDER,
             paper_targets=paper_targets,
         ),
         "precision_at_k": plot_precision_at_k(
@@ -51,7 +51,7 @@ def generate_v1_figures(reports_dir: Path, cfg: AppConfig) -> dict[str, Path]:
             paper_targets,
             figures_dir / "fig03_paper_targets.png",
             title="V1 — Measured vs Paper Targets",
-            algorithms=V1_ALGORITHMS,
+            algorithms=V1_PAPER_ALGORITHM_ORDER,
             tolerance=cfg.paper_targets.tolerance,
         ),
         "oracle_validation": plot_oracle_validation(
