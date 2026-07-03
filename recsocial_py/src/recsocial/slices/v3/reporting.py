@@ -79,7 +79,7 @@ def write_v3_report(
             "",
             "## Assumptions",
             "",
-            "See `docs/v3/reproduction_notes_v3.md`.",
+            "See `docs/VERSIONS.md#v3-implementation-notes`.",
             "",
             "## Artifacts",
             "",

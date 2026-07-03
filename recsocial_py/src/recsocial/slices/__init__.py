@@ -3,5 +3,5 @@
 Each slice is self-contained domain logic; shared evaluation and pipeline
 code lives in ``recsocial.shared``.
 
-See ``docs/VERSION_COMPARISON.md`` for differences among versions.
+See ``docs/VERSIONS.md`` for differences among versions.
 """

@@ -63,7 +63,7 @@ def write_report(
             "",
             "## Assumptions",
             "",
-            "See `docs/v1/reproduction_notes.md` for ambiguities and V1 defaults.",
+            "See `docs/VERSIONS.md#v1-implementation-notes` for V1 defaults.",
             "",
             "## Data artifacts",
             "",

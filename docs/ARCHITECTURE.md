@@ -173,3 +173,5 @@ Each config resolves relative paths against the `recsocial_py/` package root.
 | `tests/fixtures/` | Minimal CSV fixtures for unit tests |
 
 Run: `pytest tests/ -v`
+
+Related docs: [Guide](GUIDE.md) · [Versions](VERSIONS.md) · [Evaluation](EVALUATION.md)

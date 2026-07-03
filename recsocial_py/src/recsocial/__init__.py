@@ -5,7 +5,7 @@ Quick start::
     recsocial run all      # full pipeline + validation
     recsocial validate     # compare reports to paper targets
 
-Documentation: see ``docs/README.md`` in the repository root.
+Documentation: see ``docs/GUIDE.md`` in the repository root.
 
 Public API:
     - V1: ``recsocial.slices.v1`` (``run_experiment``, ``load_config``)
