@@ -41,15 +41,9 @@ Output CSV columns match the original V3 notebook export (base algorithms + PCA 
 - Metrics: MRR, MAP@10, NDCG@10, Precision@1–5
 - Paired t-tests (SDD §23): B1 vs SCSA_PLUS, SCSA vs SCSA_PLUS, STATE_ART vs *-SCSA_PLUS
 
-## 5. Known gaps vs paper targets
+> In V2, suffix `SCSA_PLUS_V3` re-ranks by V2 component scores. In V3, the same suffix means PCA re-ranking. See [Version comparison](../VERSION_COMPARISON.md).
 
-Paper targets (§26): SCSA-PLUS MRR ≈ 0.793, MAP ≈ 0.777, NDCG ≈ 0.788.
-
-Measured values depend on reputation fallback, PCA feature set, and trial-only re-ranking (not full candidate pool). See `recsocial_py/reports/v3/report.md` and `recsocial_py/reports/validation_summary.md` for current numbers.
-
-> **Note:** In V2, the suffix `SCSA_PLUS_V3` re-ranks by V2 component scores. In V3, the same suffix name means PCA re-ranking. See [Version comparison](../VERSION_COMPARISON.md).
-
-## 6. Run
+## 5. Run
 
 ```bash
 cd recsocial_py

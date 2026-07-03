@@ -83,7 +83,7 @@ flowchart TB
 | `config_loader.py` | YAML loading and path resolution |
 | `evaluation.py` | Low-level MRR, MAP, NDCG, Precision@K |
 | `session_metrics.py` | Per-user session evaluation with protocol switching |
-| `paper_metrics.py` | Legacy notebook rank-column metrics |
+| `paper_metrics.py` | Notebook rank-column metrics (V3) |
 | `reranking.py` | Score-based re-ranking of trial items |
 | `experiment_runner.py` | Standard evaluate → persist → report flow (V2/V3) |
 | `algorithms.py` | Canonical algorithm codes, paper labels, rerank suffixes |

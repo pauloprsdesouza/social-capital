@@ -20,23 +20,19 @@ For each base algorithm (B1, CS, SC, SCSA) and user session:
 2. **{BASE}-SCSA_PLUS** — re-rank the same 10 trial items by V1 SC+SA score.
 3. **{BASE}-SCSA_PLUS_V3** — re-rank by enhanced component Social Capital score.
 
-## 4. Scaling (`standard` mode)
+## 4. Scaling
 
-Matches `MainV2.ipynb`:
+Default: `minmax_0_1` in `configs/v2.yaml` (matches `MainV2.ipynb`).
 
-- `StandardScaler` on sentiment → `sentiment_impact`
-- Interaction counts scaled in-place, then `engagement_score = mean(likes, retweets, replies, quotes)`
-- `content_relevance = mean(TF-IDF vector)`
-- `network_influence = mentions_count + urls_count` (raw counts)
-- `author_influence = mentions_count` (paper_compatible mode)
-- `content_virality = scaled_retweets + scaled_quotes`
+- `sentiment_impact` from scaled sentiment
+- `engagement_score` = mean of scaled interaction counts
+- `content_relevance` = mean TF-IDF vector
+- `network_influence` = mentions + urls counts
+- `author_influence` = mentions count (`paper_compatible` mode)
+- `content_virality` = scaled retweets + quotes
 
-SDD `minmax_0_1` mode available via config for ablations.
+Alternative: `scaling_mode: standard` for ablations.
 
 ## 5. Extended formula
 
 Recency, diversity, context weights default to 0. Enable via `use_extended_formula: true`.
-
-## 6. Legacy validation
-
-Compare output to `updated_recommendations.csv` (STATE_ART + SCSA_PLUS variants without V3 suffix).

@@ -33,7 +33,7 @@ python -m recsocial.cli validate
 | `reports/v1/report.md` | FedCSIS 2022 results |
 | `reports/v2/report.md` | AMCIS 2024 results + figure validation |
 | `reports/v3/report.md` | SCSA-PLUS + PCA results |
-| `reports/validation_summary.md` | Cross-paper pass/partial/fail |
+| `reports/validation_summary.md` | Cross-paper validation |
 | `reports/v*/figures/` | Publication-style charts |
 
 ## Package structure

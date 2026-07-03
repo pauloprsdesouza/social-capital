@@ -51,13 +51,13 @@ Per SDD §23. Every assumption used in V1 must be recorded here.
 
 ## 10. MAP metric definition
 
-**Ambiguity:** Legacy `results.py` MAP differs from paper by ~0.10 across all algorithms.  
-**V1 assumption:** Implement SDD §17.3 — AP = mean of P@k at each relevant position; MAP = mean AP across user-algorithm groups.
+**Ambiguity:** Multiple MAP conventions appear in early project scripts.  
+**V1 assumption:** SDD §17.3 — AP = mean of P@k at each relevant position; MAP = mean AP across user-algorithm groups.
 
-## 11. Oracle SocialCapitalScore gap
+## 11. Oracle SocialCapitalScore
 
-**Ambiguity:** `tweets.csv` oracle scores were produced by the original C#/DynamoDB pipeline with extra features (engagement, recency, diversity).  
-**V1 assumption:** Paper formula (Algorithms 1–3) is implemented in Python; oracle scores are used for validation only (~0.51 Pearson correlation). Absolute SC values are not expected to match; ranking correlation is the validation target for V2 calibration.
+**Ambiguity:** `tweets.csv` oracle scores were produced by the original C#/DynamoDB pipeline with additional features.  
+**V1 assumption:** Paper formula (Algorithms 1–3) implemented in Python; oracle scores used for correlation validation only.
 
 ## 12. Experiment rounds
 
